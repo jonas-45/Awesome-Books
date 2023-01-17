@@ -1,0 +1,55 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.body-wrapper {
+  width: 100%;
+  padding: 80px 80px;
+}
+
+.main-heading {
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.books-container p {
+  font-size: 18px;
+  font-weight: 400px;
+  padding: 0;
+  margin: 0;
+}
+
+.books-container .book-author {
+  padding: 0px;
+  font-weight: bolder;
+  margin-top: 5px;
+  margin-bottom: 6px;
+}
+
+.no-books {
+  display: block;
+}
+
+.add-books-container {
+  margin-top: 50px;
+}
+
+.add-books-container h2 {
+  text-decoration: underline;
+}
+
+#submit {
+  padding: 6px 20px;
+}
+
+.remove-button {
+  padding: 6px 20px;
+}
+
+input {
+  padding: 5px;
+  width: 30%;
+}
