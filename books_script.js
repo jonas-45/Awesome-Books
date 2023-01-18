@@ -7,11 +7,6 @@ class BooksLibrary{
     this.books = books;
   }
 
-
-  // getAllBooks(){
-  //   return JSON.parse(localStorage.getItem("books")) || [];
-  // }
-
   showBook(book){
     this.noBooks.style.display = "none";
     this.booksContainer.innerHTML += `<div class="single-book">
@@ -22,12 +17,18 @@ class BooksLibrary{
     </div>`
 
     let removeButtons = document.querySelectorAll(".remove-button");
+    //console.log("Remove buttons: " + removeButtons.length);
     removeButtons.forEach((button,index) => {
       button.addEventListener("click", () => {
         this.removeBook(index);
         
       });
     }); 
+
+    if(this.books.length < 1){
+      alert("Should show");
+      this.noBooks.style.display = "block";
+    }
   }
 
   getBooks(){
@@ -54,14 +55,13 @@ class BooksLibrary{
 
   removeBook(index){
     this.books.splice(index,1);
+    console.log(books);
+    // let bookToRemove = document.querySelectorAll(".single-book");
+    // let booksDivs = Array.from(bookToRemove);
+    // booksDivs[index].style.display = "none";
     localStorage.setItem("books",JSON.stringify(this.books));
-    let bookToRemove = document.querySelectorAll(".single-book");
-    let booksDivs = Array.from(bookToRemove);
-    booksDivs[index].style.display = "none";
 
-    if(this.books.length < 1){
-      this.noBooks.style.display = "block";
-    }
+    window.location.reload();
   }
 }
 
