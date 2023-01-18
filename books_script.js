@@ -9,12 +9,10 @@ class BooksLibrary{
 
   showBook(book){
     this.noBooks.style.display = "none";
-    this.booksContainer.innerHTML += `<div class="single-book">
-    <p class="book-title">${book.title}</p>
-    <p class="book-author">${book.author}</p>
-    <button type="button" class="remove-button">Remove</button>
-    <hr>
-    </div>`
+    this.booksContainer.innerHTML += `<tr>
+    <td class="book-title">${book.title} by <span class="book-author">${book.author}</span></td>
+    <td><button type="button" class="remove-button">Remove</button></td>
+  </tr>`
 
     let removeButtons = document.querySelectorAll(".remove-button");
     //console.log("Remove buttons: " + removeButtons.length);
@@ -68,7 +66,7 @@ class BooksLibrary{
 let books = JSON.parse(localStorage.getItem("books")) || [];
 const form = document.getElementById("form");
 const noBooks = document.querySelector(".no-books");
-const booksContainer = document.querySelector(".books-container");
+const booksContainer = document.querySelector(".books-table");
 
 const booksObj = new BooksLibrary(books,form,noBooks,booksContainer);
 booksObj.getBooks();
