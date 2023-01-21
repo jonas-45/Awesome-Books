@@ -1,14 +1,14 @@
 const form = document.getElementById("form");
-const noBooks = document.querySelector(".no-books");
 let booksContainer = document.querySelector(".books-container");
 let books = JSON.parse(localStorage.getItem("books")) || [];
+let bookId = "";
 
 function showBook(book){
-  noBooks.style.display = "none";
-  booksContainer.innerHTML += `<div class="single-book">
+  document.getElementById("no-books").style.display = "none";
+  booksContainer.innerHTML += `<div class="single-book book${book.bid}">
   <p class="book-title">${book.title}</p>
   <p class="book-author">${book.author}</p>
-  <button type="button" class="remove-button">Remove</button>
+  <button type="button" id = "${book.bid}" class="remove-button">Remove</button>
   <hr>
 </div>`
 
@@ -16,10 +16,10 @@ AddRemoveListerToButtons();
 
 }
 
-function getBooks(){
+function getBooksFromLocalStorage(){
 
   if(books.length > 0){
-    noBooks.style.display = "none";
+    document.getElementById("no-books").style.display = "none";
     books.forEach((book) => {
       showBook(book);
     })
@@ -28,10 +28,12 @@ function getBooks(){
 
 function addBook(event){
   event.preventDefault();
+  bookId = Math.floor(Math.random() * 1000);
 
   let newBook = {
     title: document.getElementById("booktitle").value, 
-    author: document.getElementById("bookauthor").value
+    author: document.getElementById("bookauthor").value,
+    bid: bookId
   };
 
   books.push(newBook);
@@ -44,34 +46,28 @@ function addBook(event){
 function AddRemoveListerToButtons(){
   let removeButtons = document.querySelectorAll(".remove-button");
   removeButtons.forEach((button,index) => {
-    button.addEventListener("click", () => {
-      //removeBook(index)
-      books.splice(index,1);
-      localStorage.setItem("books",JSON.stringify(books));
-      let bookToRemove = document.querySelectorAll(".single-book");
-      let booksDivs = Array.from(bookToRemove);
-      booksDivs[index].style.display = "none";
-
-      if(books.length < 1){
-        noBooks.style.display = "block";
-      }
+    button.addEventListener("click", (e) => {
+      removeBook(e.target.id);
     });
   });
 }
 
-function removeBook(index){
-  books.splice(index,1);
+function removeBook(bid){
+  books = books.filter((book) => {
+    console.log("bookID: " + book.bid);
+    return book.bid != bid;
+  })
   localStorage.setItem("books",JSON.stringify(books));
-  let bookToRemove = document.querySelectorAll(".single-book");
-  let booksDivs = Array.from(bookToRemove);
-  booksDivs[index].style.display = "none";
-  
-  //books.length < 1 ? noBooks.style.display = "block" : noBooks.style.display = "none";
-  if(books.length < 1){
-    noBooks.style.display = "block";
-  }
+  let bookClass = ".book" + bid;
+  booksContainer.removeChild(document.querySelector(bookClass));
+  const noBooks = document.getElementById("no-books");
+  books.length < 1 ? noBooks.style.display = "block" : noBooks.style.display = "none";
 }
 
-getBooks(books);
+function takeOffBook(id){
+  books.splice(id,1);
+}
+
+getBooksFromLocalStorage(books);
 
 form.addEventListener('submit',addBook);
