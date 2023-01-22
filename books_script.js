@@ -3,6 +3,7 @@ class BooksLibrary {
     this.books = books;
     this.form = document.getElementById("form");
     this.booksContainer = document.querySelector(".table-body");
+    this.dateDisplay = document.querySelector(".current-datetime");
   }
 
   getBooksFromLocalStorage(){  //Retrieve books from local storage and diplay all when the page loads
@@ -61,11 +62,53 @@ class BooksLibrary {
     });
   }
 
+  displayCurrentDateAndTime(){
+    let date = new Date();
+    this.dateDisplay.innerHTML = date.toLocaleString('en-US', {
+      // weekday: 'short', // long, short, narrow
+      day: 'numeric', // numeric, 2-digit
+      year: 'numeric', // numeric, 2-digit
+      month: 'long', // numeric, 2-digit, long, short, narrow
+      hour: 'numeric', // numeric, 2-digit
+      minute: 'numeric', // numeric, 2-digit
+      second: 'numeric', // numeric, 2-digit
+    })
+  }
+
 }
 
 let books = JSON.parse(localStorage.getItem("books")) || [];
 const booksObj = new BooksLibrary(books);
-
+booksObj.displayCurrentDateAndTime();
 booksObj.getBooksFromLocalStorage();
-
 form.addEventListener('submit',booksObj.addBook.bind(booksObj));
+
+window.setInterval(() => {
+  booksObj.displayCurrentDateAndTime();
+}, 1000)
+
+function showSection(number) {
+  switch(number) {
+    case 1:
+      document.getElementById("book-list-section").style.display = "flex";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "none";
+      break;
+    case 2:
+      document.getElementById("book-list-section").style.display = "none";
+      document.getElementById("add-book-section").style.display = "flex";
+      document.getElementById("contact-section").style.display = "none";
+      break;
+    case 3: 
+      document.getElementById("book-list-section").style.display = "none";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "flex";
+      break;
+    default:
+      document.getElementById("book-list-section").style.display = "flex";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "none";
+  }
+}
+
+showSection(1);
