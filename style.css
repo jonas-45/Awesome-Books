@@ -5,15 +5,64 @@
   padding: 0;
 }
 
+body{
+  text-align: center;
+}
+
 .body-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  padding: 80px 80px;
+  min-height: 100vh;
+  padding: 10px 80px;
+}
+
+header {
+  width: 100%;
+  padding: 5px 10px;
+  text-align: end;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 20px;
+  border: 1px solid #333;
+}
+
+.nav-list {
   display: flex;
   justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-list li {
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.list-divider {
+  width: 1px;
+  height: 20px;
+  border: 1px solid #444;
+  padding: 0;
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.current-datetime {
+  margin-top: 5px;
 }
 
 section {
-  width: 768px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,10 +74,10 @@ section {
 }
 
 .books-container {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 70%;
 }
 
 .books-container p {
@@ -46,11 +95,34 @@ section {
   margin-bottom: 6px;
 }
 
-.no-books {
+.table {
+  width: 70% !important;
+  border: 2px solid #333!important;
+  border-collapse: collapse !important;
+  font-family: 'Montserrat', sans-serif;
+  
+}
+tr {
+  border: none !important;
+}
+
+td {
+  font-size: 11px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.button-cells {
+  text-align: right;
+}
+
+#no-books {
   display: block;
 }
 
 .add-books-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 50px;
   width: 768px;
   display: flex;
@@ -62,52 +134,43 @@ section {
   text-decoration: underline;
 }
 
+#form {
+  width: 400px;
+  text-align: center;
+}
+
 #submit {
-  padding: 6px 20px;
+  width: 100px;
+  padding: 5px 10px;
+  margin-left: 260px;
 }
 
 .remove-button {
-  padding: 1px 6px;
+  padding: 2px 5px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 input {
-  padding: 5px;
-  width: 60%;
+  padding: 3px;
+  width: 90%;
 }
 
-.books-table {
-  border: 2px solid #000;;
+.contact-info {
+  font-family: 'Montserrat', sans-serif;
 }
 
-.books-table tr {
+footer {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  column-gap: 400px;
+  padding: 3px 20px;
+  border: 1px solid #333;
+  margin-top: auto;
 }
 
-tr:nth-child(even) {
-  background-color: #fff;
-}
-
-tr:nth-child(odd) {
-  background-color: #DDDDDD;
-}
-
-.book-title {
-  background-color: transparent;
-}
-
-form {
-  width: 100%;
-  padding: 5% 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 15px;
-}
-
-#submit {
-  width: 30%;
+footer p {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
 }

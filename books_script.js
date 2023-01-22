@@ -1,73 +1,114 @@
-class BooksLibrary{
-  
-  constructor(books,form,nobooks,booksContainer){
-    this.form = form;
-    this.noBooks = nobooks
-    this.booksContainer = booksContainer
+class BooksLibrary {
+  constructor(books){
     this.books = books;
+    this.form = document.getElementById("form");
+    this.booksContainer = document.querySelector(".table-body");
+    this.dateDisplay = document.querySelector(".current-datetime");
   }
 
-  showBook(book){
-    this.noBooks.style.display = "none";
-    this.booksContainer.innerHTML += `<tr>
-    <td class="book-title">${book.title} by <span class="book-author">${book.author}</span></td>
-    <td><button type="button" class="remove-button">Remove</button></td>
-  </tr>`
-
-    let removeButtons = document.querySelectorAll(".remove-button");
-    //console.log("Remove buttons: " + removeButtons.length);
-    removeButtons.forEach((button,index) => {
-      button.addEventListener("click", () => {
-        this.removeBook(index);
-        
-      });
-    }); 
-
-    if(this.books.length < 1){
-      alert("Should show");
-      this.noBooks.style.display = "block";
-    }
-  }
-
-  getBooks(){
+  getBooksFromLocalStorage(){  //Retrieve books from local storage and diplay all when the page loads
     if(this.books.length > 0){
-      this.noBooks.style.display = "none";
+      document.getElementById("no-books").style.display = "none";
       this.books.forEach((book) => {
         this.showBook(book);
       })
     }
   }
 
+  showBook(book){ //Method to used to display single book on the page
+    document.getElementById("no-books").style.display = "none";
+    this.booksContainer.innerHTML += `<tr class="book${book.bid}">
+    <td>${book.title} <span class="book-author">by ${book.author}</span</td>
+    <td class="button-cells"><button type="button" id = "${book.bid}" class="remove-button">Remove</button></td>
+  </tr>`
+
+  this.AddRemoveListerToButtons();
+  }
+
   addBook(event){
     event.preventDefault();
+    let bookId = Math.floor(Math.random() * 1000);
+  
     let newBook = {
       title: document.getElementById("booktitle").value, 
-      author: document.getElementById("bookauthor").value
+      author: document.getElementById("bookauthor").value,
+      bid: bookId
     };
-
+  
     this.books.push(newBook);
     form.reset();
     this.showBook(newBook); 
-    localStorage.setItem("books",JSON.stringify(this.books));
+    localStorage.setItem("books",JSON.stringify(books));
   }
 
-  removeBook(index){
-    this.books.splice(index,1);
-    console.log(books);
-    // let bookToRemove = document.querySelectorAll(".single-book");
-    // let booksDivs = Array.from(bookToRemove);
-    // booksDivs[index].style.display = "none";
+  removeBook(bid){
+    this.books = this.books.filter((book) => {
+      console.log("bookID: " + book.bid);
+      return book.bid != bid;
+    })
     localStorage.setItem("books",JSON.stringify(this.books));
-
-    window.location.reload();
+    let bookClass = ".book" + bid;
+    this.booksContainer.removeChild(document.querySelector(bookClass));
+    const noBooks = document.getElementById("no-books");
+    this.books.length < 1 ? noBooks.style.display = "block" : noBooks.style.display = "none";
   }
+
+  AddRemoveListerToButtons(){
+    let removeButtons = document.querySelectorAll(".remove-button");
+    removeButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        this.removeBook(e.target.id);
+      });
+    });
+  }
+
+  displayCurrentDateAndTime(){
+    let date = new Date();
+    this.dateDisplay.innerHTML = date.toLocaleString('en-US', {
+      // weekday: 'short', // long, short, narrow
+      day: 'numeric', // numeric, 2-digit
+      year: 'numeric', // numeric, 2-digit
+      month: 'long', // numeric, 2-digit, long, short, narrow
+      hour: 'numeric', // numeric, 2-digit
+      minute: 'numeric', // numeric, 2-digit
+      second: 'numeric', // numeric, 2-digit
+    })
+  }
+
 }
 
 let books = JSON.parse(localStorage.getItem("books")) || [];
-const form = document.getElementById("form");
-const noBooks = document.querySelector(".no-books");
-const booksContainer = document.querySelector(".books-table");
+const booksObj = new BooksLibrary(books);
+booksObj.displayCurrentDateAndTime();
+booksObj.getBooksFromLocalStorage();
+form.addEventListener('submit',booksObj.addBook.bind(booksObj));
 
-const booksObj = new BooksLibrary(books,form,noBooks,booksContainer);
-booksObj.getBooks();
-form.addEventListener('submit',(event) => {booksObj.addBook(event)});
+window.setInterval(() => {
+  booksObj.displayCurrentDateAndTime();
+}, 1000)
+
+function showSection(number) {
+  switch(number) {
+    case 1:
+      document.getElementById("book-list-section").style.display = "flex";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "none";
+      break;
+    case 2:
+      document.getElementById("book-list-section").style.display = "none";
+      document.getElementById("add-book-section").style.display = "flex";
+      document.getElementById("contact-section").style.display = "none";
+      break;
+    case 3: 
+      document.getElementById("book-list-section").style.display = "none";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "flex";
+      break;
+    default:
+      document.getElementById("book-list-section").style.display = "flex";
+      document.getElementById("add-book-section").style.display = "none";
+      document.getElementById("contact-section").style.display = "none";
+  }
+}
+
+showSection(1);
